@@ -26,6 +26,42 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+4. **Set up environment variables:**: Create a .env file in the project root and define any necessary variables, such as:
+
+- ENVIRONMENT=PRODUCTION
+- PLUGIN_FILE_PATH=plugins
+- BOOKS_FILE_PATH=data/books.csv
+
+# Usage Examples
+
+1. **Run the application:**:
+
+```
+python app.py
+```
+
+
+2. **Basic commands:**:
+- Add: ``` add 5 3 ```
+- Subtract: ``` subtract 10 4 ```
+- Divide: ``` divide 8 2 ```
+- Exit: ``` exit ```
+- View history: ``` history ```
+- Save history: ``` save_history ```
+- Load history: ``` load_history ```
+- Clear history: ``` clear_history ```
+- Delete history record:``` delete_history_record <index> ```
+- Menu: ``` menu ```
+
+
+# Calculator Class
+
+The Calculator class performs basic arithmetic operations and manages calculation history through the HistoryFacade. Each operation logs the calculation to the history and records it for later retrieval.
+
+# History Management
+
+The HistoryFacade class manages calculation history using a Pandas DataFrame, allowing for adding, saving, loading, and clearing history entries.
+
 # Design Patterns Used:
 1. **Facade Pattern:**: Implemented in the HistoryFacade class to simplify interactions with the history management functionalities. This pattern hides the complexities of the underlying operations (like adding, saving, loading, and clearing history) and provides a simplified interface.
 
@@ -76,3 +112,4 @@ if len(arguments) != 2:
 Code: [app.py](https://github.com/Hk574/Midterm-project.git/app.py)
 
 ```
+
