@@ -140,5 +140,6 @@ class App:
         logging.info(self.command_handler.commands)
         logging.info("Calculator REPL started.")
         logging.info("Type 'exit' to exit.")
+        logging.info("Type 'menu' to get available plugin commands.")
         logging.info("Available history commands: load_history, save_history, clear_history, delete_history_record <index>.")
         self.repl()
