@@ -1,3 +1,4 @@
+"""Unit tests for various App commands using pytest."""
 import pytest
 from app import App
 
@@ -7,6 +8,7 @@ def app():
     return App()
 
 def test_app_get_environment_variable():
+    """Test retrieving the ENVIRONMENT variable."""
     app = App()
 #   Retrieve the current environment setting
     current_env = app.get_environment_variable('ENVIRONMENT')

@@ -36,3 +36,5 @@ class DataPlugin(Command):
         except Exception as e:
             print("Error reading the CSV file:", e)
             logging.error("Error reading CSV file %s: %s", filename, e)
+# pylint: disable=too-few-public-methods
+# pylint: disable=arguments-differ
