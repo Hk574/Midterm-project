@@ -40,6 +40,7 @@ class HistoryFacade:
     def clear_history(self):
         """Clear the history DataFrame."""
         self.history_df = pd.DataFrame(columns=["Calculation"])
+        self.history_df.to_csv(self.history_file, index=False)
         logging.info("History cleared.")
 
     def delete_entry(self, index):
