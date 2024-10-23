@@ -1,12 +1,11 @@
 """A command-line calculator with REPL functionality for basic arithmetic, plugin support, and interaction logging."""
 import logging
-import os
 import logging.config
+import os
 import sys
 from dotenv import load_dotenv  # Third-party import
 from calculator.calculator import Calculator  # First-party import
-from commands import CommandHandler  # First-party import
-
+from commands import CommandHandlerFactory  # First-party import
 
 class App:
     """Main application class for the command-line calculator with REPL functionality."""
@@ -17,7 +16,7 @@ class App:
         self.settings = self.load_environment_variables()
         self.settings.setdefault('ENVIRONMENT', 'PRODUCTION')
         self.calculator = Calculator()
-        self.command_handler = CommandHandler()
+        self.command_handler = CommandHandlerFactory()
 
     def configure_logging(self):
         """Configure logging settings from a file or set basic configuration."""
@@ -130,14 +129,14 @@ class App:
                         print(f"Error: Failed to execute '{operation}'. {e}")
 
                 if operation not in self.command_handler.list_plugins() +  ['add', 'subtract', 'multiply', 'divide',"menu"]:
-                    logging.error(f"No such command: unknown_command {cmd_input}")
+                    logging.error("No such command: unknown_command %s", cmd_input)
                     sys.exit(1) 
             except Exception as e:
                 logging.error("An unexpected error occurred: %s", e)
                 print(f"Error: An unexpected error occurred: {e}")
     def start(self):   
         """Initialize the calculator, load plugins, and start the REPL.""" 
-        self.command_handler.load_plugins("plugins")
+        self.command_handler.load_plugins(os.getenv("plugin_file_path"))
         logging.info(self.command_handler.commands)
         logging.info("Calculator REPL started.")
         logging.info("Type 'exit' to exit.")
