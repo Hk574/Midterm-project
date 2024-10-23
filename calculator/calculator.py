@@ -1,14 +1,14 @@
-from calculator.history import HistoryFacade
+"""Module for the Calculator class, handling arithmetic operations and history management."""
 import logging
+from calculator.history import HistoryFacade
 
 
 class Calculator:
-    """The main calculator class that performs basic arithmetic operations and manages plugins."""
-    
+    """The main calculator class that performs basic arithmetic operations and manages plugins."""    
     def __init__(self):
         self.history_facade = HistoryFacade()
-
     def add(self, a, b):
+        """Return the sum of a and b."""
         result = a + b
         entry = f"Added {a} + {b} = {result}"
         self.history_facade.add_entry(entry)
@@ -16,6 +16,7 @@ class Calculator:
         return result
 
     def subtract(self, a, b):
+        """Return the result of a minus b."""
         result = a - b
         entry = f"Subtracted {a} - {b} = {result}"
         self.history_facade.add_entry(entry)
@@ -23,6 +24,7 @@ class Calculator:
         return result
 
     def multiply(self, a, b):
+        """Return the product of a and b."""
         result = a * b
         entry = f"Multiplied {a} * {b} = {result}"
         self.history_facade.add_entry(entry)
@@ -30,6 +32,7 @@ class Calculator:
         return result
 
     def divide(self, a, b):
+        """Return the result of a divided by b."""
         if b == 0:
             logging.error("Division by zero attempted.")
             raise ValueError("Cannot divide by zero.")
@@ -53,8 +56,7 @@ class Calculator:
         loaded_history = self.history_facade.load_history()
         if not loaded_history.empty:
             return loaded_history.to_string(index=False)
-        else:
-            return "No history found."
+        return "No history found."
 
     def clear_history(self):
         """Clear the current calculation history."""
