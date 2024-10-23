@@ -7,8 +7,8 @@ data from a specified CSV file.
 """
 import logging
 import csv
-from commands import Command
 import os
+from commands import Command
 
 class DataPlugin(Command):
     """A plugin that displays data from a CSV file."""
