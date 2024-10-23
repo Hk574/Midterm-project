@@ -50,9 +50,12 @@ class CommandHandlerFactory: #factory
         self.commands[command_name] = command
 
     def execute_command(self, command_name: str):
-        """Easier to ask for forgiveness than permission (EAFP) - Use when it's most likely to work."""
+        """Easier to ask for forgiveness than 
+            permission (EAFP) - 
+            Use when it's most likely to work."""
         try:
-            self.commands[command_name].execute() # depends on command_name calling the concrete command class
+            self.commands[command_name].execute() 
+            # depends on command_name calling the concrete command class
         except KeyError:
             logging.error("No such command: %s", command_name)
 
@@ -75,7 +78,8 @@ class CommandHandlerFactory: #factory
         if isinstance(plugin, Command):
             logging.info("Plugin '%s' registered successfully.", plugin.__class__.__name__)
             if len(arguments) > 1:
-                self.commands[command_name] = [plugin, f"No of Arguments is {len(arguments)} & Arguments are {arguments[1:]}"]
+                self.commands[command_name] = [plugin, f"No of Arguments is {len(arguments)} \
+                & Arguments are {arguments[1:]}"]
             else:
                 self.commands[command_name] = [plugin, f"No of Arguments is {len(arguments)}"]
 

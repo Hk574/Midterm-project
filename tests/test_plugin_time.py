@@ -16,7 +16,8 @@ def test_time_plugin_execute(capfd, caplog):
         out, _ = capfd.readouterr()
         # Extract the current time format
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M")        
-        # Verify the printed output contains "Current Time" and the current time (ignoring seconds to avoid timing issues)
+        # Verify the printed output contains "Current Time" and the 
+        # current time (ignoring seconds to avoid timing issues)
         assert "Current Time:" in out
         assert current_time in out
 
