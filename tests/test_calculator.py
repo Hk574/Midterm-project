@@ -136,3 +136,5 @@ def test_delete_entry(h_facade):
 def test_delete_invalid_entry(h_facade):
     """Test attempting to delete a non-existent entry in the history."""
     assert h_facade.delete_entry(5) == "Invalid index. No record deleted."
+
+# pylint: disable=redefined-outer-name
