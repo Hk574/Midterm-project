@@ -1,20 +1,15 @@
-"""
-A command-line calculator application with REPL (Read-Eval-Print Loop) functionality.
-
-This module allows users to perform basic arithmetic operations (addition, subtraction, multiplication, division) and manage calculation history. It supports loading additional commands via plugins and logs interactions for debugging and monitoring.
-
-Classes:
-- App: The main application class that initializes the calculator, handles user input, and processes commands.
-"""
+"""A command-line calculator with REPL functionality for basic arithmetic, plugin support, and interaction logging."""
 import logging
 import os
 import logging.config
+import sys
 from dotenv import load_dotenv  # Third-party import
 from calculator.calculator import Calculator  # First-party import
 from commands import CommandHandler  # First-party import
 
 
 class App:
+    """Main application class for the command-line calculator with REPL functionality."""
     def __init__(self):
         os.makedirs('logs', exist_ok=True)
         self.configure_logging()
@@ -22,9 +17,10 @@ class App:
         self.settings = self.load_environment_variables()
         self.settings.setdefault('ENVIRONMENT', 'PRODUCTION')
         self.calculator = Calculator()
-        self.commandHandler = CommandHandler()
+        self.command_handler = CommandHandler()
 
     def configure_logging(self):
+        """Configure logging settings from a file or set basic configuration."""
         logging_conf_path = 'logging.conf'
         if os.path.exists(logging_conf_path):
             logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
@@ -33,43 +29,43 @@ class App:
         logging.info("Logging configured.")
 
     def load_environment_variables(self):
+        """Load and return environment variables as a dictionary."""
         settings = {key: value for key, value in os.environ.items()}
         logging.info("Environment variables loaded.")
         return settings
 
     def get_environment_variable(self, env_var: str = 'ENVIRONMENT'):
+        """Return the value of the specified environment variable."""
         return self.settings.get(env_var, None)
 
 
     def repl(self):
-         while True:
+        """Run the Read-Eval-Print Loop (REPL) for user input and command processing."""
+        while True:
             try:
                 cmd_input = input(">>> ").strip()
                 if cmd_input.lower() == 'exit':
                     logging.info("Exiting the calculator.")
                     print("Exiting the calculator.")
-                    break
+                    sys.exit(0)
 
                 if cmd_input.lower() == 'history':
                     print("Calculation History:")
                     print(self.calculator.show_history())
-                    break
-                
+                    break                
                 if cmd_input.lower() == 'load_history':
                     logging.info("Loading history.")
                     print(self.calculator.load_history())
                     continue
-
                 if cmd_input.lower() == "save_history":
                     logging.info("Saving history.")
                     print(self.calculator.save_history())
                     continue
-
-                elif cmd_input.lower() == "clear_history":
+                if cmd_input.lower() == "clear_history":
                  logging.info("Clearing history.")
                  print(self.calculator.clear_history())
                  continue
-                elif cmd_input.startswith("delete_history_record"):
+                if cmd_input.startswith("delete_history_record"):
                     cmd_parts = cmd_input.split()
 
                     if len(cmd_parts) == 2 and cmd_parts[1].isdigit():
@@ -80,9 +76,9 @@ class App:
                         logging.warning("Invalid index provided for delete_history_record.")
                         print("Error: Please provide a valid index to delete.")
                     continue
-                elif cmd_input.lower() == 'menu':
+                if cmd_input.lower() == 'menu':
                     print("Available commands:")
-                    print(self.commandHandler.list_plugins())
+                    print(self.command_handler.list_plugins())
                 # Split the command and its arguments
                 cmd_parts = cmd_input.split()
                 if len(cmd_parts) == 0:
@@ -126,21 +122,23 @@ class App:
                     print(f"Result: {result}")
 
                 # Handle plugin commands
-                elif operation in self.commandHandler.commands.keys():
+                elif operation in self.command_handler.commands.keys():
                     try:
-                        self.commandHandler.commands[operation][0].execute(*arguments)
+                        self.command_handler.commands[operation][0].execute(*arguments)
                     except Exception as e:
-                        logging.error(f"Error executing command '{operation}': {e}")
+                        logging.error("Error executing command '%s': %s", operation, e)
                         print(f"Error: Failed to execute '{operation}'. {e}")
 
-                if operation not in self.commandHandler.list_plugins() +  ['add', 'subtract', 'multiply', 'divide',"menu"]: 
-                    print("command not found")
+                if operation not in self.command_handler.list_plugins() +  ['add', 'subtract', 'multiply', 'divide',"menu"]:
+                    logging.error(f"No such command: unknown_command {cmd_input}")
+                    sys.exit(1) 
             except Exception as e:
-                logging.error(f"An unexpected error occurred: {e}")
+                logging.error("An unexpected error occurred: %s", e)
                 print(f"Error: An unexpected error occurred: {e}")
-    def start(self):    
-        self.commandHandler.load_plugins("plugins")
-        print(self.commandHandler.commands)
+    def start(self):   
+        """Initialize the calculator, load plugins, and start the REPL.""" 
+        self.command_handler.load_plugins("plugins")
+        print(self.command_handler.commands)
         logging.info("Calculator REPL started.")
         logging.info("Type 'exit' to exit.")
         print("Available history commands: load_history, save_history, clear_history, delete_history_record <index>.")
