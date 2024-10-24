@@ -1,4 +1,6 @@
-"""A command-line calculator with REPL functionality for basic arithmetic, plugin support, and interaction logging."""
+"""A command-line calculator with REPL 
+functionality for basic arithmetic, plugin support, 
+and interaction logging."""
 import logging
 import logging.config
 import os
@@ -127,7 +129,6 @@ class App:
                     except Exception as e:
                         logging.error("Error executing command '%s': %s", operation, e)
                         print(f"Error: Failed to execute '{operation}'. {e}")
-
                 if operation not in self.command_handler.list_plugins() +  ['add', 'subtract', 'multiply', 'divide',"menu"]:
                     logging.error("No such command: unknown_command %s", cmd_input)
                     sys.exit(1) 
