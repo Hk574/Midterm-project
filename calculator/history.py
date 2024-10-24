@@ -48,6 +48,7 @@ class HistoryFacade:
         if 0 <= index < len(self.history_df):
             deleted_record = self.history_df.iloc[index]
             self.history_df = self.history_df.drop(index).reset_index(drop=True)
+            self.history_df.to_csv(self.history_file, index=False)
             logging.info("Deleted record: %s", deleted_record['Calculation'])
             return f"Deleted record: {deleted_record['Calculation']}"
         logging.error("Invalid index provided for deletion.")
